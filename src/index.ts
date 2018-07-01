@@ -1,3 +1,4 @@
+import axios from 'axios'
 const audioDom = document.createElement('audio')
 audioDom.onended=()=>{
             if(audioState.list.length>0){
@@ -26,6 +27,13 @@ export function text2audio(t: string) {
 }
 export function set_token(tok:string){
     audioState.token=tok;
+}
+export function get_token(APIKey:string,SecretKey:string){
+    axios.get(`https://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials&client_id=${APIKey}&client_secret=${SecretKey}`).then(r=>{return r.data}).then(r=>{
+        if(r.access_token){
+            set_token(r.access_token)
+        }
+    })
 }
 function play(t:string){
     audioDom.setAttribute('src', `http://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=abcdxxx&tok=${audioState.token}&tex=${t}&vol=9&per=0&spd=5&pit=5`);
