@@ -1,4 +1,5 @@
 import axios from 'axios'
+declare let document:any;
 const audioDom = document.createElement('audio')
 audioDom.onended=()=>{
             if(audioState.list.length>0){
