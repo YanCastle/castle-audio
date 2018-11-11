@@ -1,15 +1,18 @@
 import axios from 'axios'
 declare let document: any;
-const audioDom = document.createElement('audio')
-audioDom.onended = () => {
-    if (audioState.list.length > 0) {
-        play(audioState.list.shift())
+function get_audio_dom() {
+    var audioDom = document.createElement('audio')
+    audioDom.onended = () => {
+        if (audioState.list.length > 0) {
+            play(audioState.list.shift())
+        }
     }
+    audioDom.onplaying = () => {
+        audioState.playing = true;
+    }
+    audioDom.autoplay = true;
+    return audioDom;
 }
-audioDom.onplaying = () => {
-    audioState.playing = true;
-}
-audioDom.autoplay = true;
 const audioState = {
     playing: false,
     list: [],
@@ -41,9 +44,11 @@ if (window) {
     window.BaiduTTS = {
         set_token,
         text2audio,
+        play
     }
 }
 function play(t: string) {
-    audioDom.setAttribute('src', `http://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=abcdxxx&tok=${audioState.token}&tex=${t}&vol=9&per=0&spd=5&pit=5`);
-    audioDom.play();
+    var dom = get_audio_dom()
+    dom.setAttribute('src', `http://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=abcdxxx&tok=${audioState.token}&tex=${t}&vol=9&per=0&spd=5&pit=5`);
+    dom.play();
 }
