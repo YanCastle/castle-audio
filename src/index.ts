@@ -1,7 +1,7 @@
 import axios from 'axios'
 declare let document: any;
+var audioDom = document.createElement('audio')
 function get_audio_dom() {
-    var audioDom = document.createElement('audio')
     audioDom.onended = () => {
         if (audioState.list.length > 0) {
             play(audioState.list.shift())
@@ -20,11 +20,11 @@ const audioState = {
 }
 export function text2audio(t: string) {
     try {
-        if (audioState.playing) {
-            audioState.list.push(t)
-        } else {
-            play(t)
-        }
+        // if (audioState.playing) {
+        //     audioState.list.push(t)
+        // } else {
+        play(t)
+        // }
     } catch (e) {
 
     }
